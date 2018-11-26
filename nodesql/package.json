@@ -1,0 +1,28 @@
+{
+  "name": "nodesql",
+  "version": "1.0.0",
+  "description": "node sql",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "./node_modules//bin/nodemon app.js"
+  },
+  "author": "cloud",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.6.1",
+    "body-parser": "^1.18.3",
+    "cheerio": "^1.0.0-rc.2",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.4.0",
+    "mysql2": "^1.5.3",
+    "request": "^2.87.0",
+    "sequelize": "^4.38.0",
+    "sha1": "^1.1.1",
+    "superagent": "^3.8.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.6"
+  }
+}

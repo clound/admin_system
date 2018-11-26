@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      body {padding: 50px;font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;}
+    </style>
+  </head>
+  <body>
+        <% stu.forEach(function (user) { %>
+            <ul>
+           
+                <li><%= user.name %></li>
+                <li><%= user.sex %></li>
+                <li><%= user.birth %></li>
+                <li><%= user.addr %></li>
+                <li><%= user.photo %></li>
+            </ul>
+        <% }) %>
+
+    
+  </body>
+</html>
