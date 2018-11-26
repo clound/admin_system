@@ -42,7 +42,7 @@
         </el-row>
 
         <el-form-item style="margin-bottom: 40px;" label-width="45px" label="摘要:">
-          <el-input type="textarea" class="article-textarea" :rows="1" autosize placeholder="请输入内容" v-model="postForm.content_short">
+          <el-input type="textarea" class="article-textarea" :rows="1" autosize placeholder="请输入内容" v-model="postForm.description">
           </el-input>
           <span class="word-counter" v-show="contentShortLength">{{contentShortLength}}字</span>
         </el-form-item>
@@ -69,11 +69,10 @@ import { mapGetters } from 'vuex'
 // import Warning from './Warning'
 // import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
 const defaultForm = {
-  status: 'draft',
   title: '', // 文章题目
   type: 1, // 文章类型
   content: '', // 文章内容
-  content_short: '' // 文章摘要
+  description: '' // 文章摘要
   // id: undefined,
 }
 export default {
@@ -108,7 +107,7 @@ export default {
   },
   computed: {
     contentShortLength() {
-      return this.postForm.content_short.length
+      return this.postForm.description.length
     },
     ...mapGetters([
       'username'
@@ -128,7 +127,7 @@ export default {
       this.$refs.postForm.validate(valid => {
         if (valid) {
           postArticle(this.postForm).then((response) => {
-            const res = response.data
+            const res = response
             if (res.code === 0) {
               this.$message({
                 type: 'success',

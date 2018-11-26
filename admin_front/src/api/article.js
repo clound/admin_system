@@ -1,9 +1,8 @@
 import request from '@/utils/request'
 
-export function fetchList(params) {
+export function getList(params) {
   return request({
-    baseURL: '/fibapi',
-    url: '/list',
+    url: '/article/getlist',
     method: 'get',
     params
   })
@@ -12,8 +11,7 @@ export function fetchList(params) {
 export function postArticle(params) {
   // console.log(params)
   return request({
-    baseURL: '/fibapi',
-    url: '/list',
+    url: '/article/create',
     method: 'post',
     data: params
   })

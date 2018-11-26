@@ -26,9 +26,9 @@
         </template>
       </el-table-column>
       
-      <el-table-column  align="center" label="short_content">
+      <el-table-column  align="center" label="description">
         <template slot-scope="scope">
-          <span>{{scope.row.short_content}}</span>
+          <span>{{scope.row.description}}</span>
         </template>
       </el-table-column>
 
@@ -62,9 +62,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchList } from '@/api/article'
+import { getList } from '@/api/article'
 export default {
-  name: 'articleList',
   data() {
     return {
       centerDialogVisible: false,
@@ -101,30 +100,30 @@ export default {
     ])
   },
   created() {
-    this.getList()
+    this._getList()
   },
   methods: {
-    getList() {
+    _getList() {
       this.listLoading = true
-      console.log(this.listQuery)
+      // console.log(this.listQuery)
       this.listQuery.username = this.username
-      fetchList(this.listQuery).then(response => {
+      getList(this.listQuery).then(response => {
         console.log(response)
-        this.list = response.data.data
-        // this.total = response.data.total
+        this.list = response.data && response.data.rows
+        this.total = response.data && response.data.total
         this.listLoading = false
       })
     },
     handleSizeChange(val) {
       this.listQuery.limit = val
-      this.getList()
+      this._getList()
     },
     handleCurrentChange(val) {
       this.listQuery.page = val
-      this.getList()
+      this._getList()
     },
     showcontent(row) {
-      const str = new Buffer(row.content.data)
+      const str = new Buffer(row.content)
       this.centerDialogVisible = true
       this.morecontent = str.toString()
     }

@@ -3,7 +3,6 @@ const util = require('util')
 const sha1 = require('sha1')
 const Tips = require('../utils/tips')
 const JwtUtil = require('../utils/jwt')
-// console.log(User);
 module.exports = {
   create(req, res) {
     return User.create({
@@ -40,7 +39,7 @@ module.exports = {
     let jwt = new JwtUtil(req.query.token)
     let result = jwt.verifyToken()
     return User.getUsers({
-      attributes: ['id', 'name', 'phone'],
+      attributes: ['id', 'name', 'phone', 'avatar'],
       where: {
         name: result
       }
