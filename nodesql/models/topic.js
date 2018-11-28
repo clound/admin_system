@@ -7,10 +7,16 @@ module.exports = function(squelize, DataTypes) {
         type: DataTypes.INTEGER,
         allowNull: false, //非空
         autoIncrement: true, //自动递增
-        primaryKey: true //主键
+        primaryKey: true,
+        unique: true
+      },
+      userId: {
+        type: DataTypes.BIGINT(11),
+        field: 'user_id',
+        allowNull: false
       },
       type: {
-        type: DataTypes.ENUM('1','2','3','4','5','6','7','8'),
+        type: DataTypes.ENUM('1', '2', '3', '4', '5', '6', '7', '8'),
         allowNull: false
       },
       title: {
@@ -31,8 +37,18 @@ module.exports = function(squelize, DataTypes) {
     {
       freezeTableName: true,
       timestamps: false,
-      comment: '文章表'
+      comment: '文章表',
+      indexes: [
+        {
+          name: 'topic_userId',
+          method: 'BTREE',
+          fields: ['user_id']
+        }
+      ]
     }
   )
+  Topic.associate = function(models) {
+    Topic.belongsTo(models.user, {as: 'user'})
+  }
   return Topic
 }

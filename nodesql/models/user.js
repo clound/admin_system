@@ -8,7 +8,8 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.INTEGER,
         allowNull: false, //非空
         autoIncrement: true, //自动递增
-        primaryKey: true //主键
+        primaryKey: true, //主键
+        unique : true
       },
       name: {
         type: DataTypes.STRING,
@@ -37,22 +38,19 @@ module.exports = function(sequelize, DataTypes) {
     }
   )
   User.associate = function(models) {
-    // console.log(models)
     User.hasMany(models.topic, {
-      as: 'AuthorTopics',
-      foreignKey: 'authorId'
+      as: 'Topics',
+      foreignKey:'user_id',
+      targetKey:'id'
     })
-    User.belongsToMany(models.topic, {
-      as: 'WatchedTopics',
-      through: 'UserWatchedTopic'
-    })
-    User.belongsToMany(models.topic, {
-      as: 'CommentedTopics',
-      through: 'UserCommentTopic'
+    User.hasOne(models.usercheckin, {
+      as: 'CheckIn',
+      foreignKey:'user_id',
+      targetKey:'id'
     })
   }
   User.getUsers = function(options) {
-    return this.findAll(options)
+    return this.findOne(options)
   }
   return User
 }

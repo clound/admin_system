@@ -10,7 +10,7 @@
 
       <el-table-column width="180px" align="center" label="User">
         <template slot-scope="scope">
-          <span>{{scope.row.user}}</span>
+          <span>{{scope.row.user.name}}</span>
         </template>
       </el-table-column>
 

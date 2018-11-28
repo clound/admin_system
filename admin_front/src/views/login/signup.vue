@@ -68,7 +68,7 @@ export default {
     }
     return {
       loginForm: {
-        username: 'cc',
+        username: 'admin',
         password: '123456',
         // sex: 1,
         phone: '18168066256'

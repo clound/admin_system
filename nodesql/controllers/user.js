@@ -1,4 +1,5 @@
 const User = require('../models').user
+const UserCheckIn = require('../models').usercheckin
 const util = require('util')
 const sha1 = require('sha1')
 const Tips = require('../utils/tips')
@@ -22,8 +23,10 @@ module.exports = {
         password: sha1(req.body.password)
       }
     }).then(user => {
-      if (user && user.length > 0) {
-        let jwt = new JwtUtil(req.body.username)
+      if (user) {
+        let jwt = new JwtUtil({id: user.id, name: req.body.username})
+        let userCheckIn = UserCheckIn.build({'loginIp': req.hostname})
+        user.setCheckIn(userCheckIn)
         res.send({
           code: 0,
           token: jwt.generateToken(),
@@ -38,22 +41,22 @@ module.exports = {
   getUserInfo(req, res) {
     let jwt = new JwtUtil(req.query.token)
     let result = jwt.verifyToken()
-    return User.getUsers({
+    return User.findOne({
       attributes: ['id', 'name', 'phone', 'avatar'],
-      where: {
-        name: result
-      }
+      include:{model: UserCheckIn, as: 'CheckIn'},
+      where: {name: result.name}
     }).then(user => {
-      if (user && user.length > 0) {
+      if (user) {
         res.send({...Tips[0], data: user})
       } else {
         res.send(Tips[1006])
       }
     })   
-    .catch(error => res.status(400).send(error))
+    .catch(error => {
+      res.status(400).send(error)
+    })
   },
   list(req, res) {
-    console.log(util.inspect(User));
     return User.getUsers({})
     .then(user => res.status(200).send(user))
     .catch(error => res.status(400).send(error))
