@@ -133,9 +133,10 @@ export default {
       this._getList()
     },
     showcontent(row) {
-      const str = new Buffer(row.content)
-      this.centerDialogVisible = true
-      this.morecontent = str.toString()
+      this.$router.push(`/articles/edit/${row.id}`)
+      // const str = new Buffer(row.content)
+      // this.centerDialogVisible = true
+      // this.morecontent = str.toString()
     }
   }
 }

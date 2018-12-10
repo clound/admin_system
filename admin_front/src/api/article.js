@@ -8,6 +8,14 @@ export function getList(params) {
   })
 }
 
+export function fetchArticle(params) {
+  return request({
+    url: '/article/getlist',
+    method: 'get',
+    params
+  })
+}
+
 export function postArticle(params) {
   // console.log(params)
   return request({

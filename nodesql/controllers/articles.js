@@ -20,7 +20,16 @@ module.exports = {
     .catch(error => res.status(400).send(error))
   },
   list(req, res) {
+    let id = req.query.id
+    console.log(id);
+    let pg = req.query.page || 1
+    let limit = req.query.limit || 10
     return Topic.findAndCountAll({
+      limit: Number(limit),
+      offset: limit * (pg - 1),
+      where: {
+        ...id ? { id: id } : ''
+      },
       include: {
         model: User,
         as: 'user',
