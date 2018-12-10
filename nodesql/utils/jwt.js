@@ -39,6 +39,20 @@ class Jwt {
       res = 'err'
     }
     return res
+  } 
+  // 过期token
+  expireToken() {
+    let data = this.data
+    let cert = fs.readFileSync(path.join(__dirname, '../pem/rsa_private_key.pem')) //私钥 可以自己生成
+    let token = jwt.sign(
+      {
+        data,
+        exp: -1
+      },
+      cert,
+      { algorithm: 'RS256' }
+    )
+    return token
   }
 }
 

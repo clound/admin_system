@@ -31,7 +31,8 @@ module.exports = function(squelize, DataTypes) {
         type: DataTypes.TEXT
       },
       ispublished: {
-        type: DataTypes.BOOLEAN
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
       }
     },
     {

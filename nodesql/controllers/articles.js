@@ -1,20 +1,16 @@
 const Topic = require('../models').topic
 const User = require('../models').user
-const JwtUtil = require('../utils/jwt')
 const Tips = require('../utils/tips')
 // console.log(User);
 module.exports = {
   create(req, res) {
-    let token = req.headers.jwt
-    let jwt = new JwtUtil(token)
-    let result = jwt.verifyToken()
     let user = User.build({
-      id: result.id
+      id: req.api_token.id
     })
     return user.createTopic({
       type: req.body.type,
       title: req.body.title,
-      userId: result.id,
+      userId: req.api_token.id,
       description: req.body.description,
       content: req.body.content
     })
@@ -28,11 +24,43 @@ module.exports = {
       include: {
         model: User,
         as: 'user',
-        attributes: ['name']
+        attributes: ['name'],
+        where: {
+          'id': req.api_token.id
+        }
       }
     })
     .then(data => {
       // console.log(data)
+      res.status(200).send({...Tips[0], data})})
+    .catch(error =>{
+      console.log(error)
+      res.status(400).send(error)})
+  },
+  delete(req, res) {
+    let id = req.body.id
+    return Topic.destroy({
+      where: {
+        id
+      }
+    })
+    .then(data => {
+      res.status(200).send({...Tips[0], data})})
+    .catch(error =>{
+      console.log(error)
+      res.status(400).send(error)})
+  },
+  update(req, res) {
+    let id = req.body.id
+    let status = req.body.status
+    return Topic.update(
+      {ispublished: !status}, 
+      {
+        where: {
+          id
+        }
+    })
+    .then(data => {
       res.status(200).send({...Tips[0], data})})
     .catch(error =>{
       console.log(error)

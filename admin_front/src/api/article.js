@@ -16,3 +16,21 @@ export function postArticle(params) {
     data: params
   })
 }
+
+export function deleteOne(params) {
+  // console.log(params)
+  return request({
+    url: '/article/delete',
+    method: 'post',
+    data: params
+  })
+}
+
+export function changeStatus(params) {
+  // console.log(params)
+  return request({
+    url: '/article/update',
+    method: 'post',
+    data: params
+  })
+}

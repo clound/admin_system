@@ -39,12 +39,10 @@ module.exports = {
     .catch(error => res.status(400).send(error))
   },
   getUserInfo(req, res) {
-    let jwt = new JwtUtil(req.query.token)
-    let result = jwt.verifyToken()
     return User.findOne({
       attributes: ['id', 'name', 'phone', 'avatar'],
       include:{model: UserCheckIn, as: 'CheckIn'},
-      where: {name: result.name}
+      where: {name: req.api_token.name}
     }).then(user => {
       if (user) {
         res.send({...Tips[0], data: user})
@@ -60,5 +58,10 @@ module.exports = {
     return User.getUsers({})
     .then(user => res.status(200).send(user))
     .catch(error => res.status(400).send(error))
+  },
+  logout(req, res) {
+    let jwt = new JwtUtil({id: req.api_token.id, name: req.api_token.name})
+    jwt.expireToken()
+    return res.send({...Tips[0]})
   }
 }

@@ -107,7 +107,7 @@ export default {
       this.listLoading = true
       postCrawel(this.listQuery).then(response => {
         console.log(response)
-        this.list = response.data.data.rows
+        this.list = response.data.rows
         this.total = response.data.count
         this.listLoading = false
       })

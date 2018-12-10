@@ -2,13 +2,10 @@
   <div class="app-container">
 
     <el-table :data="list" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
-      <el-table-column align="center" label="ID" width="80">
-        <template slot-scope="scope">
-          <span>{{scope.row.id}}</span>
-        </template>
+      <el-table-column align="center" label="ID" type="index" width="80">
       </el-table-column>
 
-      <el-table-column width="180px" align="center" label="User">
+      <el-table-column width="120px" align="center" label="User">
         <template slot-scope="scope">
           <span>{{scope.row.user.name}}</span>
         </template>
@@ -20,9 +17,19 @@
         </template>
       </el-table-column>
 
-       <el-table-column class-name="status-col" align="center"  label="Status" width="110">
+       <el-table-column align="center"  label="Type" width="110">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.type | statusFilter">{{scope.row.type | wordFilter}}</el-tag>
+          <el-tag :type="scope.row.type | typeFilter">{{scope.row.type | twordFilter}}</el-tag>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center"
+        label="Status" width="110">
+        <template slot-scope="scope">
+          <el-tag
+          :type="scope.row.ispublished | statusFilter"
+          @click.native="_changeStatus(scope.row)"
+          >{{scope.row.ispublished | swordFilter}}</el-tag>
         </template>
       </el-table-column>
       
@@ -32,10 +39,11 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Actions" width="120">
+      <el-table-column align="center" label="Actions" width="220">
         <template slot-scope="scope">
           <!-- <router-link :to="'/example/edit/'+scope.row.id"> -->
-            <el-button type="primary" size="small" icon="el-icon-edit"  @click="showcontent(scope.row)">Edit</el-button>
+            <el-button type="primary" size="mini" icon="el-icon-edit"  @click="showcontent(scope.row)">查看</el-button>
+            <el-button type="danger" size="mini" icon="el-icon-delete"  @click="_deleteOne(scope.row)">删除</el-button>
           <!-- </router-link> -->
         </template>
       </el-table-column>
@@ -62,8 +70,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { getList } from '@/api/article'
+import { getList, deleteOne, changeStatus } from '@/api/article'
+import { mixin } from './base/mixin'
 export default {
+  mixins: [mixin],
   data() {
     return {
       centerDialogVisible: false,
@@ -76,22 +86,6 @@ export default {
         limit: 10,
         username: ''
       }
-    }
-  },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        1: 'success',
-        2: 'primary'
-      }
-      return statusMap[status]
-    },
-    wordFilter(status) {
-      const statusMap = {
-        1: '技术',
-        2: '生活'
-      }
-      return statusMap[status]
     }
   },
   computed: {
@@ -114,12 +108,28 @@ export default {
         this.listLoading = false
       })
     },
-    handleSizeChange(val) {
-      this.listQuery.limit = val
-      this._getList()
+    _deleteOne(row) {
+      deleteOne({ id: row.id }).then(response => {
+        const res = response
+        if (!res.code) {
+          this.handlePage()
+        } else {
+          this.$message.warning('删除失败!')
+        }
+      })
     },
-    handleCurrentChange(val) {
-      this.listQuery.page = val
+    _changeStatus(row) {
+      console.log(row)
+      changeStatus({ id: row.id, status: row.ispublished }).then(response => {
+        const res = response
+        if (!res.code) {
+          this.handlePage()
+        } else {
+          this.$message.warning('更新失败!')
+        }
+      })
+    },
+    handlePage() {
       this._getList()
     },
     showcontent(row) {

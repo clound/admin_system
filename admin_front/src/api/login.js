@@ -28,11 +28,10 @@ export function getInfo(token) {
   })
 }
 
-export function logout(token) {
+export function logout(params) {
   return request({
-    baseURL: '/fibapi',
     url: '/user/logout',
     method: 'get',
-    params: { token }
+    params
   })
 }

@@ -1,7 +1,8 @@
 const express = require('express')
 const router = express.Router()
 var userController = require('../controllers').user;
-// var User = db.User;
+const checkToken = require('../middlewares/check_api_token')
+
 
 router.post('/signup', (req, res, next) => {
     userController.create(req, res)
@@ -10,8 +11,11 @@ router.post('/signup', (req, res, next) => {
 router.post('/login', (req, res, next) => {
     userController.login(req, res)
 })
-router.get('/info', (req, res, next) => {
+router.get('/info', checkToken, (req, res, next) => {
     userController.getUserInfo(req, res)
+})
+router.get('/logout', checkToken, (req, res, next) => {
+    userController.logout(req, res)
 })
 
 // router.get('/:name', function (req, res) {

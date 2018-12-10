@@ -3,6 +3,7 @@
 module.exports = function (app) {
   app.use('/user', require('./users'));
   app.use('/article', require('./articles'));
+  app.use('/crawel', require('./crawel'));
   // app.use('/crawel', require('./crawel'));
   // app.use('/student', require('./students'));
     // app.use('/signup', require('./signup'));
